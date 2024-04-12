@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CatEx RT Task</title>
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script>
+        <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    </head>
+    <body></body>
+    <script>
+
+    /* create timeline */
+    var timeline = [];
+
+    /* task instructions block */
+    var taskinstr = {
+      type: "html-keyboard-response",
+      stimulus: '<p style="font-size: 40px; font-weight: bold;">TASK INSTRUCTIONS</p>' +
+      "<p>This is a timed task that assesses your responses to two different types of trials.</p>" +
+      "<p>On the next page, you will practice both types of trials before you begin the actual task.</p>" + 
+          "<p><strong>Press Enter for further instructions.</strong></p>",
+          choices: ['Enter'],
+    };
+    timeline.push(taskinstr);
+
+    /* instructions for category trial */
+    var catinstr = {
+      type: "html-keyboard-response",
+      stimulus: ['<p style="font-size: 40px; font-weight: bold;">CATEGORY TRIAL INSTRUCTIONS</p>' +
+        "<p>You task is to generate a cateogy for the [provided word]. </p>" +
+          "<p>In each trial, you will be provided with a word and will be asked to identify a category that it belongs to.</p>" +
+          "<p>Here, since <strong>[DOG]</strong> belongs to the category of ANIMAL, you would type <strong>ANIMAL</strong> in the box.</p>" +
+          "<div style='float: center;'><img src='img/taskinstr_cat_dog.png'></img>" + /* replace with category trial sample image*/
+          "</div>"+
+          "<p>Type your answer <strong>as quickly as possible</strong> and press Enter.</p>" +
+          "<p><strong>Press Enter for a few practice trials.</strong></p>"],
+      choices: ['Enter'],
+    };
+    timeline.push(catinstr);
+
+    /* category practice trials */
+    var catprac1 = {
+        type: 'survey-text',
+        questions: [{prompt: '<p style="color: blue"><strong>[SKYSCRAPER]</strong> belongs to the CATEGORY of:</p>',
+        name: 'catprac1', required: true}],
+        button_label: 'press Enter',
+        on_start: function (e){
+          if(e.keyCode ==13){
+            $('#jspsych-survey-text-next').click}
+      }};
+    timeline.push(catprac1);
+    var catprac2 = {
+        type: 'survey-text',
+        questions: [{prompt: '<p style="color: blue"><strong>[DOG]</strong> belongs to the CATEGORY of:</p>',
+        name: 'catprac2', required: true}],
+        button_label: 'press Enter',
+        on_start: function (e){
+          if(e.keyCode ==13){
+            $('#jspsych-survey-text-next').click}
+          }};
+    timeline.push(catprac2);
+
+  /* instructions for example trial */
+       var exinstr = {
+      type: "html-keyboard-response",
+      stimulus: ['<p style="font-size: 40px; font-weight: bold;">EXAMPLE TRIAL INSTRUCTIONS</p>' +
+        "<p>You task is to generate an example for the [provided word]. </p>" +
+          "<p>In each trial, you will be provided with a word and will be asked to provide an example of that word.</p>" +
+          "<p>Here, since an example of a <strong>[DOG]</strong> is a POODLE, you would type <strong>POODLE</strong> in the box.</p>" +
+          "<div style='float: center;'><img src='img/taskinstr_ex_dog.png'></img>" + /* replace with example trial sample image*/
+          "</div>"+
+          "<p>Type your answer <strong>as quickly as possible</strong> and press Enter.</p>" +
+          "<p><strong>Press Enter for a few practice trials.</strong></p>"],
+      choices: ['Enter'],
+    };
+    timeline.push(exinstr);
+
+    /* example practice trials*/
+    var exprac1 = {
+        type: 'survey-text',
+        questions: [{prompt: '<p style="color: green">An EXAMPLE of a <strong>[TEA]</strong> is:</p>',
+        name: 'exprac1', required: true}],
+        button_label: 'press Enter',
+        on_start: function (e){
+          if(e.keyCode ==13){
+            $('#jspsych-survey-text-next').click}
+      }};
+    timeline.push(exprac1);
+    var exprac2 = {
+        type: 'survey-text',
+        questions: [{prompt: '<p style="color: green">An EXAMPLE of a <strong>[DOG]</strong> is:</p>',
+        name: 'exprac2', required: true}],
+        button_label: 'press Enter',
+        on_start: function (e){
+          if(e.keyCode ==13){
+            $('#jspsych-survey-text-next').click}
+          }};
+    timeline.push(exprac2);
+
+/* start the experiment */
+jsPsych.init({
+  timeline: timeline
+});
+
+/* start the experiment */
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+    jsPsych.data.displayData('csv');
+    jsPysch.data.get().localSave('csv','CStaskdat.csv') /*format & file name*/
+    }
+    });
+</script>
+
+</html>
